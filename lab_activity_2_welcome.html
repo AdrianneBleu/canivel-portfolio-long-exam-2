@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Activity 2: Welcome</title>
+    <!-- Removed Georgia font link as Arial is a system font -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet"> -->
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif; /* Changed font to Arial */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #36393f; /* Dark background color from the image */
+            color: white; /* Default text color */
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: auto; /* Allow scrolling if content overflows */
+        }
+
+        .welcome-container {
+            background-color: #36393f; /* Container background also dark to blend with body */
+            color: white;
+            padding: 80px 40px;
+            /* REMOVED: border-radius: 15px; */ /* Removed to make the container edges disappear */
+            /* REMOVED: box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); */ /* Removed to make the container visually disappear */
+            text-align: center;
+            max-width: 900px;
+            width: 100%;
+            box-sizing: border-box;
+            margin: auto; /* Center container in the middle of the screen */
+        }
+
+        .welcome-container h1 {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 40px;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .personal-info {
+            margin-bottom: 50px;
+            line-height: 1.8;
+            font-size: 1.2em;
+        }
+
+        .personal-info p {
+            margin: 8px 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Arial', sans-serif; /* Changed font to Arial */
+        }
+
+        .personal-info strong {
+            color: white;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .welcome-container {
+                padding: 60px 30px;
+            }
+            .welcome-container h1 {
+                font-size: 2.8em;
+                margin-bottom: 30px;
+            }
+            .personal-info {
+                font-size: 1.1em;
+                margin-bottom: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-container {
+                padding: 40px 20px;
+                border-radius: 10px;
+            }
+            .welcome-container h1 {
+                font-size: 2em;
+                margin-bottom: 25px;
+            }
+            .personal-info {
+                font-size: 1em;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1>Welcome to My React App!</h1>
+        <div class="personal-info">
+            <p><strong>Name:</strong> Adrianne Bleu R. Canivel</p>
+            <p><strong>Email:</strong> adrianne.canivel@gmail</p>
+            <p><strong>Other Personal Info:</strong> 21-year-old stunner from Taytay Rizal!</p>
+        </div>
+    </div>
+</body>
+</html>

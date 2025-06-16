@@ -1,0 +1,71 @@
+/* src/components/SocialMedias.css */
+
+/* Styling for the main container of the Social Medias page */
+.social-medias-container {
+    /* Reduced padding for less top/bottom spacing within the section */
+    padding: 30px 20px; /* Adjusted from 50px 30px */
+    max-width: 850px; 
+    /* REMOVED: background-color, border-radius, box-shadow to eliminate the visual container */
+    /* background-color: rgba(255, 255, 255, 0.7); */
+    /* border-radius: 15px; */
+    /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); */
+    margin-bottom: 30px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    min-height: 60vh; 
+}
+
+/* Styling for the main heading (h2) on the Social Medias page */
+.social-medias-container h2 {
+    font-family: 'Georgia', serif;
+    font-size: 2.8em; 
+    color: #333;
+    margin-bottom: 5px; /* Reduced space below heading */
+    letter-spacing: -0.01em; 
+}
+
+/* Styling for the introductory paragraph on the Social Medias page */
+.social-medias-container p {
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+    max-width: 600px; 
+    margin-top: 0; /* Ensures no default top margin pushes it down */
+    margin-bottom: 10px; /* Reduced space between paragraph and social links container */
+}
+
+
+/* --- Responsive Adjustments for Social Medias Page --- */
+@media (max-width: 768px) {
+    .social-medias-container {
+        padding: 25px 20px; /* Adjusted from 40px 25px */
+        max-width: 90%;
+    }
+    .social-medias-container h2 {
+        font-size: 2.2em;
+        margin-bottom: 4px; /* Further reduced */
+    }
+    .social-medias-container p {
+        font-size: 1em;
+        line-height: 1.5;
+        margin-bottom: 10px; /* Further reduced */
+    }
+}
+
+@media (max-width: 480px) {
+    .social-medias-container {
+        padding: 20px 15px; /* Adjusted from 30px 20px */
+        max-width: 95%;
+    }
+    .social-medias-container h2 {
+        font-size: 1.8em;
+        margin-bottom: 2px; /* Further reduced */
+    }
+    .social-medias-container p {
+        font-size: 0.9em;
+        margin-bottom: 5px; /* Further reduced */
+    }
+}

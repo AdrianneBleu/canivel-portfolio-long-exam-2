@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Activity 3: Articles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling - Consistent with home and about pages */
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column; /* Stack header and main content */
+            align-items: center;
+            min-height: 100vh;
+            /* Using the same background image as the home page */
+            background-image: url('/images/lover-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            color: #333;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+
+        /* Top Navigation Bar - Consistent with home and about pages */
+        .navbar {
+            width: 100%;
+            background: linear-gradient(to right, #FFDDE1, #FFC0CB);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #FF69B4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 25px;
+            flex-grow: 1; /* Allows nav-links to take up available space */
+            justify-content: center; /* Centers the actual links within the available space */
+        }
+
+        .navbar .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #FF69B4;
+        }
+
+        /* Styles for the Login button - Consistent with home and about pages */
+        .navbar .login-button {
+            background-color: #FF69B4;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            margin-right: 50px; /* Consistent margin as per home page */
+        }
+
+        .navbar .login-button:hover {
+            background-color: #FF3399;
+        }
+
+        /* Main Content Area - Consistent with home and about pages */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px 50px 20px; /* Top padding to clear fixed navbar */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Articles Container (the content box) - Consistent with home/about pages' content containers */
+        .articles-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 800px; /* Adjust as needed for articles content */
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+
+        .articles-container h2 {
+            font-size: 2.5em;
+            color: #FF69B4;
+            margin-bottom: 30px;
+            font-weight: bold;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .articles-container .article-item {
+            margin-bottom: 30px;
+            text-align: left; /* Articles usually have left-aligned text */
+            padding: 20px; /* Added padding to each item */
+            border-radius: 15px; /* Rounded corners for article items */
+            background-color: rgba(255, 255, 255, 0.7); /* Slightly softer white background for individual articles */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Subtle shadow for each item */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover */
+            cursor: pointer;
+        }
+
+        .articles-container .article-item:hover {
+            transform: translateY(-5px); /* Lift effect on hover */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+        }
+
+        .articles-container .article-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .articles-container .article-item + .article-item { /* Add border only between items */
+            margin-top: 30px; /* Space between articles */
+            border-top: 1px solid rgba(0,0,0,0.1); /* Separator between articles */
+            padding-top: 30px; /* Padding above the separator */
+        }
+
+        .articles-container .article-item h3 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .articles-container .article-item p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 15px;
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* NEW: Styles for the hidden full article content */
+        .articles-container .article-item .full-article-content {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #666;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(0,0,0,0.1); /* Dotted line separator for more content */
+        }
+
+        .articles-container .article-item .read-more {
+            color: #FF69B4;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px; /* Added padding */
+            border-radius: 20px; /* Rounded button look */
+            border: 1px solid #FF69B4; /* Border to define button shape */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            display: inline-block; /* Allows padding and margin to apply correctly */
+            margin-top: 10px; /* Space above button */
+        }
+
+        .articles-container .article-item .read-more:hover {
+            background-color: #FF69B4;
+            color: white;
+            border-color: #FF3399;
+            text-decoration: none; /* Remove underline on hover when it's a button */
+        }
+
+        /* Footer Styling - Consistent with 404 page and Home page */
+        .footer {
+            width: 100%;
+            background: linear-gradient(to right, #FFDDE1, #FFC0CB); /* Light pink gradient */
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow at the top of the footer */
+            margin-top: auto; /* Pushes the footer to the bottom */
+            box-sizing: border-box;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 10px;
+        }
+
+        .footer .footer-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer .footer-links a:hover {
+            color: #FF69B4;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        /* Responsive Adjustments - Consistent with home and about pages */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .navbar .nav-links {
+                margin-right: 0;
+                justify-content: center;
+                width: 100%;
+                gap: 15px;
+            }
+            .navbar .logo {
+                font-size: 2em;
+            }
+            .navbar .nav-links a, .navbar .login-button {
+                font-size: 1em;
+                padding: 6px 15px;
+            }
+            .main-content {
+                padding: 120px 15px 50px 15px;
+            }
+            .articles-container {
+                padding: 30px;
+                border-radius: 20px;
+            }
+            .articles-container h2 {
+                font-size: 2em;
+                margin-bottom: 20px;
+            }
+            .articles-container .article-item {
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+            .articles-container .article-item h3 {
+                font-size: 1.6em;
+            }
+            .articles-container .article-item p {
+                font-size: 1em;
+                line-height: 1.6;
+            }
+            .articles-container .article-item .read-more {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+            .footer {
+                padding: 15px 20px;
+            }
+            .footer .footer-links {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 8px 15px;
+            }
+            .navbar .logo {
+                font-size: 1.8em;
+            }
+            .navbar .nav-links {
+                gap: 10px;
+            }
+            .articles-container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            .articles-container h2 {
+                font-size: 1.8em;
+            }
+            .articles-container .article-item {
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            .articles-container .article-item h3 {
+                font-size: 1.4em;
+            }
+            .articles-container .article-item p {
+                font-size: 0.9em;
+            }
+            .articles-container .article-item .read-more {
+                padding: 5px 10px;
+                font-size: 0.8em;
+            }
+            .footer {
+                padding: 10px 15px;
+            }
+            .footer .footer-links {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="lab_activity_3_home.html" class="logo">Lover</a>
+        <div class="nav-links">
+            <a href="lab_activity_3_home.html">Home</a>
+            <a href="lab_activity_3_about.html">About</a>
+            <a href="lab_activity_3_articles.html">Articles</a> <!-- Link to this page -->
+        </div>
+        <a href="lab_activity_3_404.html" class="login-button">Login</a>
+    </div>
+
+    <div class="main-content">
+        <div class="articles-container">
+            <h2>Our Articles</h2>
+            
+            <div class="article-item">
+                <h3>The Art of Self-Love: A Journey with Lover</h3>
+                <p>
+                    Dive deep into the lyrical genius of Taylor Swift's "Lover" and explore how its themes encourage self-acceptance and embracing your authentic self. This article breaks down key songs that resonate with the journey of self-love.
+                </p>
+                <div class="full-article-content" style="display: none;">
+                    <p>
+                        Beyond the catchy melodies and heartfelt lyrics, "Lover" serves as a profound exploration of self-love. Songs like "The Archer" reveal vulnerability and the courage it takes to recognize one's own worth, even amidst imperfections. It's a reminder that true love, in all its forms, begins with the acceptance and adoration of oneself. The album’s pastel aesthetic and whimsical imagery further reinforce the idea of creating a beautiful, safe space within for self-discovery and growth.
+                    </p>
+                    <p>
+                        Through tracks like "Daylight," Swift emphasizes leaving behind past darkness and stepping into a brighter, more honest version of herself. This resonates deeply with the journey of self-love, encouraging listeners to shed old insecurities and embrace the light within. The album isn't just about romantic love; it's about the deep, abiding love we cultivate for ourselves, which then allows us to experience healthier, more fulfilling relationships with others.
+                    </p>
+                </div>
+                <a href="#" class="read-more">Read More &rarr;</a>
+            </div>
+
+            <div class="article-item">
+                <h3>Decoding the Easter Eggs: Lover Album Edition</h3>
+                <p>
+                    Taylor Swift is known for her intricate Easter eggs. Join us as we uncover hidden messages, fan theories, and subtle clues embedded within the "Lover" album's visuals and lyrics. Did you spot them all?
+                </p>
+                <div class="full-article-content" style="display: none;">
+                    <p>
+                        Taylor Swift's "Lover" album is a treasure trove for eagle-eyed fans, packed with subtle nods to her past, hints about her future, and intricate details that deepen the storytelling. From the glittery handwritten notes in the album booklet to the hidden meanings behind her music video aesthetics, every element feels intentional. Fans have spent countless hours dissecting everything from the colors used (reflecting a shift from the darker "Reputation" era to a vibrant pastel palette) to specific phrases in songs that echo earlier lyrics, creating a rich, interconnected universe.
+                    </p>
+                    <p>
+                        One prominent theory revolves around the recurring number '13' and its various appearances, a long-standing tradition in her work. The music videos, particularly for "ME!" and "Lover," are dense with visual metaphors and direct references to her personal life and career milestones, inviting fans to piece together the narrative themselves. These "Easter eggs" don't just entertain; they foster a unique bond between artist and audience, making each listen and re-watch a collaborative puzzle-solving experience.
+                    </p>
+                </div>
+                <a href="#" class="read-more">Read More &rarr;</a>
+            </div>
+
+            <div class="article-item">
+                <h3>The Evolution of Style: Lover Era Fashion</h3>
+                <p>
+                    From pastel power suits to glittery heart sunglasses, the "Lover" era brought a distinct and iconic fashion sensibility. We take a look at the outfits that defined this colorful chapter in Taylor's career.
+                </p>
+                <div class="full-article-content" style="display: none;">
+                    <p>
+                        The "Lover" era marked a dramatic and welcome shift in Taylor Swift's public image and fashion. Moving away from the edgy, dark aesthetics of "Reputation," "Lover" embraced a kaleidoscope of pastels, glitter, and romantic silhouettes. This sartorial evolution was a visual representation of the album's themes of hope, joy, and finding love. Swift frequently sported iridescent fabrics, sequined outfits, and soft, ethereal gowns, often adorned with hearts and rainbows.
+                    </p>
+                    <p>
+                        Key fashion moments included her iconic pastel pink and blue power suit from the iHeartRadio Music Awards, symbolizing a confident and playful return, and the dreamy, cloud-like gown from the MTV VMAs. Accessories like heart-shaped sunglasses became synonymous with the era, adding a whimsical touch. The fashion was a celebration of femininity and freedom, reflecting the lyrical content of songs like "ME!" and "Lover," inviting fans to step into a world of vibrant color and unbridled optimism.
+                    </p>
+                </div>
+                <a href="#" class="read-more">Read More &rarr;</a>
+            </div>
+
+            <div class="article-item">
+                <h3>Building Your Own Dreamscape: Inspired by Lover</h3>
+                <p>
+                    Beyond the music, "Lover" inspires us to create our own personal havens of happiness. This article offers tips on decorating, journaling, and finding joy in everyday moments, all with a touch of "Lover" magic.
+                </p>
+                <div class="full-article-content" style="display: none;">
+                    <p>
+                        "Lover" isn't just an album; it's an invitation to cultivate your own personal paradise. Inspired by its soft hues, romantic melodies, and themes of cherished moments, you can transform your everyday life into a dreamscape. Start with your physical space: infuse your room with pastel colors, soft lighting, and cozy textures. Add elements like string lights, fresh flowers, and scented candles to evoke a serene and joyful atmosphere reminiscent of the album's cover.
+                    </p>
+                    <p>
+                        Extend this dreamscape to your daily routines. Create a "Lover"-inspired playlist for moments of relaxation or creativity. Embrace journaling to reflect on your emotions, desires, and moments of gratitude, just as Taylor often pens her feelings into songs. Find joy in simple pleasures, whether it's baking, reading a favorite book, or spending time in nature. The essence of "Lover" is about finding beauty and happiness in the ordinary, turning your life into a cherished, ongoing love story.
+                    </p>
+                </div>
+                <a href="#" class="read-more">Read More &rarr;</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const readMoreLinks = document.querySelectorAll('.read-more');
+
+            readMoreLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default link behavior
+
+                    const articleItem = this.closest('.article-item');
+                    const fullContent = articleItem.querySelector('.full-article-content');
+
+                    if (fullContent.style.display === 'none' || fullContent.style.display === '') {
+                        fullContent.style.display = 'block';
+                        this.innerHTML = 'Show Less &larr;'; // Change text to "Show Less" with left arrow
+                    } else {
+                        fullContent.style.display = 'none';
+                        this.innerHTML = 'Read More &rarr;'; // Change text back to "Read More" with right arrow
+                    }
+                });
+            });
+        });
+    </script>
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="lab_activity_3_about.html">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+        </div>
+        <p>&copy; 2020 Taylor Swift</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,172 @@
+/* src/App.css */
+body {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: #fcf8f0; 
+  background-image: url('/grain.png');
+  background-repeat: repeat;
+  background-size: 150px;
+  background-blend-mode: overlay;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+  padding-top: 30px;
+  padding-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  box-sizing: border-box;
+}
+
+/* Styles for the Top Bar */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background-color: #333;
+  z-index: 1000;
+}
+
+/* Styles for the Bottom Bar */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background-color: #333;
+  z-index: 1000;
+}
+
+.app-container {
+  text-align: center;
+  width: 100%;
+  max-width: 900px;
+  /* Important: Remove any explicit height or fixed positioning here
+     that might interfere with routing content changing its height dynamically. */
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-motto {
+  font-size: 3.5em;
+  line-height: 1.2;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.portfolio-subtitle {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1.5em;
+  color: #555;
+  margin-top: -20px;
+  margin-bottom: 30px;
+}
+
+.tag-section {
+  padding: 20px;
+}
+
+/* --- NEW STYLES FOR LINKS AND SCREENS --- */
+
+/* Style for the Link element wrapping the tag */
+.tag-link {
+  text-decoration: none; /* Remove default underline */
+  color: inherit;        /* Inherit text color from the .tag div */
+}
+
+/* Apply hover effect directly to the .tag div when the .tag-link is hovered */
+.tag-link:hover .tag {
+  transform: translateY(-2px); /* Keep the lift effect */
+}
+
+
+/* Basic styling for the content of the new screens */
+.screen-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh; /* Ensures content is vertically somewhat centered on the screen */
+  text-align: center;
+  padding: 20px; /* Add some internal padding */
+  box-sizing: border-box;
+}
+
+.screen-content h2 {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.screen-content p {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 30px;
+  max-width: 600px; /* Limit paragraph width for readability */
+}
+
+.back-button {
+  background-color: #333;
+  color: #fcf8f0;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none; /* Remove underline for the button link */
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #555;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-motto {
+    font-size: 2.5em;
+  }
+  .portfolio-subtitle {
+    font-size: 1.2em;
+  }
+  .screen-content h2 {
+    font-size: 2em;
+  }
+  .screen-content p {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-motto {
+    font-size: 1.8em;
+  }
+  .portfolio-subtitle {
+    font-size: 1em;
+  }
+  .screen-content h2 {
+    font-size: 1.5em;
+  }
+  .screen-content p {
+    font-size: 0.9em;
+  }
+  .back-button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+}

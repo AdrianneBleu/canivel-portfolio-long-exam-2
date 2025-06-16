@@ -1,0 +1,190 @@
+/* src/components/MyProjects.css */
+
+/* --- General Container Styling for My Projects Page --- */
+/* This applies to both the list view and the detail view,
+   giving them a consistent look with the other pages. */
+.my-projects-container,
+.project-detail-container {
+    padding: 50px 30px; /* Generous internal padding for content */
+    max-width: 850px; /* Limits the maximum width for better readability */
+    /* REMOVED: background-color, border-radius, box-shadow to eliminate the visual container */
+    /* background-color: rgba(255, 255, 255, 0.7); */
+    /* border-radius: 15px; */
+    /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); */
+    margin-bottom: 30px; /* Space below the container before the fixed bottom bar */
+    display: flex; /* Enables flexbox for its children */
+    flex-direction: column; /* Stacks children vertically */
+    align-items: center; /* Horizontally centers children within the container */
+    justify-content: center; /* Vertically centers children within the container (if space allows) */
+    min-height: 60vh; /* Ensures the content area takes up a good portion of the screen height */
+    box-sizing: border-box; /* Includes padding in the element's total width and height */
+}
+
+/* Styling for the main headings (h2) on both My Projects and Project Detail pages */
+.my-projects-container h2,
+.project-detail-container h2 {
+    font-family: 'Georgia', serif; /* Consistent font */
+    font-size: 2.8em; /* Large font size for primary heading */
+    color: #333; /* Dark text color */
+    margin-bottom: 0px; /* Reduced space below the heading to 0px */
+    letter-spacing: -0.01em; /* Subtle letter spacing for better appearance */
+}
+
+/* Shared paragraph styling for the introduction text on the list page
+   and the main text on the detail page */
+.projects-intro-text,
+.project-detail-text {
+    font-family: 'Georgia', serif; /* Consistent font */
+    font-size: 1.1em; /* Readable font size for body text */
+    color: #555; /* Slightly lighter text color for body content */
+    line-height: 1.6; /* Improves readability by adding space between lines */
+    max-width: 600px; /* Limits paragraph width for optimal line length */
+    margin-top: 0; /* Ensures no default top margin on the paragraph */
+    margin-bottom: 40px; /* Space before the project list or detail content */
+    text-align: center; /* Centers the text */
+}
+
+/* --- Project List Specific Styling --- */
+.project-list {
+    display: flex; /* Enables flexbox for project items */
+    flex-direction: column; /* Stacks project items vertically */
+    gap: 20px; /* Space between individual project items */
+    width: 100%; /* Makes the list take the full width of its parent container */
+    max-width: 650px; /* Limits the maximum width of the project list for better layout */
+    margin-bottom: 40px; /* Space before the "Go Back Home" button */
+}
+
+/* Styling for the Link element that wraps each project item */
+.project-item-link {
+    text-decoration: none; /* Removes the default underline from the link */
+    color: inherit; /* Inherits text color from the child div.project-item */
+    width: 100%; /* Makes the link take the full available width */
+}
+
+/* Styling for individual project items within the list */
+.project-item {
+    background-color: #fff; /* Pure white background for each project item */
+    padding: 20px 25px; /* Internal padding inside each item */
+    border-radius: 10px; /* Rounded corners for project items */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* Subtle shadow for each item */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition for hover effects */
+    text-align: left; /* Aligns text within the project item to the left */
+    border-left: 5px solid #FFEC8B; /* Left border, using a pastel yellow color */
+}
+
+/* Hover effect for project items */
+.project-item:hover {
+    transform: translateY(-3px); /* Lifts the item slightly on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+    border-left-color: #FF99CC; /* Changes left border color to pastel pink on hover */
+}
+
+/* Styling for the project title (h3) within each item */
+.project-item h3 {
+    font-family: 'Georgia', serif; /* Consistent font */
+    font-size: 1.6em; /* Font size for project titles */
+    color: #333; /* Dark text color */
+    margin-top: 0; /* Removes default top margin */
+    margin-bottom: 5px; /* Space below the title */
+    line-height: 1.3; /* Line height for titles */
+}
+
+/* Styling for the due date text within each project item */
+.project-item .project-due-date {
+    font-family: 'Georgia', serif; /* Consistent font */
+    font-size: 0.9em; /* Smaller font size for dates */
+    color: #777; /* Lighter grey for dates */
+    margin-top: 0; /* Removes default top margin */
+    margin-bottom: 0; /* Removes default bottom margin */
+}
+
+/* --- Project Detail Specific Styling --- */
+.project-detail-nav-buttons {
+    display: flex; /* Enables flexbox for buttons */
+    gap: 20px; /* Space between buttons */
+    margin-top: 40px; /* Space above the navigation buttons */
+    flex-wrap: wrap; /* Allows buttons to wrap onto multiple lines on smaller screens */
+    justify-content: center; /* Horizontally centers the buttons */
+}
+
+/* Style for a secondary button (e.g., "Go Back Home" on detail page) */
+.secondary-button {
+  background-color: #555; /* A slightly different background color for secondary buttons */
+  color: #fcf8f0; /* Light text color */
+}
+
+/* Hover effect for secondary buttons */
+.secondary-button:hover {
+  background-color: #777; /* Darker grey on hover */
+}
+
+
+/* --- Responsive Adjustments for My Projects and Project Detail Pages --- */
+
+@media (max-width: 768px) {
+    .my-projects-container,
+    .project-detail-container {
+        padding: 40px 25px; /* Adjusted padding for medium screens */
+        max-width: 90%; /* Adjust width for tablets */
+    }
+    .my-projects-container h2,
+    .project-detail-container h2 {
+        font-size: 2.2em; /* Adjust heading size */
+        margin-bottom: 0px; /* Reduced for responsive screens as well */
+    }
+    .projects-intro-text,
+    .project-detail-text {
+        font-size: 1em; /* Adjust paragraph size */
+        line-height: 1.5;
+        margin-bottom: 30px;
+    }
+    .project-list {
+        gap: 15px; /* Adjust gap between items */
+    }
+    .project-item {
+        padding: 18px 20px; /* Adjust item padding */
+    }
+    .project-item h3 {
+        font-size: 1.4em; /* Adjust title size */
+    }
+    .project-item .project-due-date {
+        font-size: 0.85em; /* Adjust date size */
+    }
+    .project-detail-nav-buttons {
+      gap: 15px; /* Adjust gap between buttons */
+    }
+}
+
+@media (max-width: 480px) {
+    .my-projects-container,
+    .project-detail-container {
+        padding: 30px 20px; /* Adjusted padding for small screens */
+        max-width: 95%; /* Adjust width for mobile */
+    }
+    .my-projects-container h2,
+    .project-detail-container h2 {
+        font-size: 1.8em;
+        margin-bottom: 0px; /* Reduced for responsive screens as well */
+    }
+    .projects-intro-text,
+    .project-detail-text {
+        font-size: 0.9em;
+        margin-bottom: 25px;
+    }
+    .project-list {
+        gap: 10px;
+    }
+    .project-item {
+        padding: 15px;
+    }
+    .project-item h3 {
+        font-size: 1.2em;
+    }
+    .project-item .project-due-date {
+        font-size: 0.8em;
+    }
+    .project-detail-nav-buttons {
+      flex-direction: column; /* Stack buttons vertically on very small screens */
+      gap: 10px;
+    }
+}

@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for rendering charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6; /* Light background for the page */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            background-color: #3f51b5; /* Deep blue, similar to image */
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Keeps navbar at the top when scrolling */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .top-navbar .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-navbar .menu-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .top-navbar .menu-icon:hover {
+            color: #e0e0e0;
+        }
+
+        .top-navbar .dashboard-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .top-navbar .logout-btn {
+            background-color: #f44336; /* Red for logout */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .top-navbar .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Main container for sidebar and content */
+        .app-container {
+            display: flex;
+            flex: 1; /* Allows it to take remaining vertical space */
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 250px; /* Fixed width for sidebar */
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+            padding-top: 20px;
+            transition: width 0.3s ease; /* For collapsing effect */
+            flex-shrink: 0; /* Prevents sidebar from shrinking */
+        }
+
+        .sidebar.collapsed {
+            width: 60px; /* Collapsed width */
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .sidebar nav ul li a i {
+            font-size: 1.2em;
+            margin-right: 15px;
+            width: 25px; /* Fixed width for icon to keep alignment */
+            text-align: center;
+        }
+        
+        .sidebar.collapsed nav ul li a i {
+            margin-right: 0; /* Remove margin when collapsed */
+        }
+
+        .sidebar.collapsed nav ul li a span {
+            display: none; /* Hide text when collapsed */
+        }
+
+        .sidebar nav ul li a:hover {
+            background-color: #e8eaf6; /* Lighter blue on hover */
+            color: #3f51b5;
+        }
+
+        .sidebar nav ul li a.active {
+            background-color: #e8eaf6; /* Active link background */
+            color: #3f51b5; /* Active link color */
+            border-left: 5px solid #3f51b5; /* Active indicator */
+            padding-left: 15px; /* Adjust padding for border */
+        }
+        
+        .sidebar.collapsed nav ul li a.active {
+            padding-left: 17.5px; /* Re-adjust padding for collapsed border */
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1; /* Takes all available space */
+            padding: 30px;
+            background-color: #f4f7f6; /* Light background */
+            display: flex;
+            flex-direction: column;
+            gap: 30px; /* Space between sections */
+            overflow-y: auto; /* Allow scrolling within content area */
+        }
+
+        /* Reusable Card Styling */
+        .card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Dashboard Specific Styles */
+        #dashboardContent {
+            display: flex; /* Make sure dashboard content also uses flex for consistency */
+            flex-direction: column;
+            gap: 30px;
+        }
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+            gap: 25px;
+        }
+
+        .stat-card {
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .label {
+            font-size: 1em;
+            color: #777;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #3f51b5; /* Blue for values */
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-card {
+            min-height: 300px; /* Ensures minimum height for the chart container */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-card .chart-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Styles for the canvas elements inside chart-card */
+        .chart-card canvas {
+            width: 100% !important; /* Forces canvas to take full width of its parent */
+            height: 100% !important; /* Forces canvas to take full height of its parent */
+            max-height: 250px; /* Optional: Set a max height to prevent excessive vertical stretching */
+            display: block; /* Ensures proper block-level behavior */
+        }
+
+        /* Users Overview Table (General table styling, used by Dashboard and Users sections) */
+        .data-table-container {
+            overflow-x: auto; /* Allows horizontal scrolling for table on small screens */
+            width: 100%; /* Ensure it takes full width of its parent */
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background-color: #fbfbfb;
+        }
+
+        /* Reports Specific Styles */
+        #reportsContent {
+            display: flex; /* Make sure reports content also uses flex */
+            flex-direction: column;
+            gap: 30px;
+        }
+        .reports-content .charts-section {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 columns on large screens */
+        }
+
+        /* Adjustments for the reports layout if needed for different chart sizes */
+        .reports-info-box {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.5;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+        }
+
+        /* Users Specific Styles */
+        #usersContent {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Reduced gap for a more compact users list */
+        }
+        
+        .users-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 15px; /* Space between elements */
+        }
+
+        .users-header .title {
+            font-size: 1.8em; /* Slightly larger title for the users page */
+            font-weight: 600;
+            color: #333;
+        }
+
+        .users-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: #f0f2f5; /* Light grey background for search bar */
+            border-radius: 5px;
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .users-search input {
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 1em;
+            color: #333;
+            padding: 0;
+        }
+
+        .users-search i {
+            color: #777;
+        }
+
+        .pagination-controls {
+            display: flex;
+            justify-content: flex-end; /* Align to the right as in the image */
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-controls .rows-per-page {
+            font-size: 0.9em;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pagination-controls select {
+            padding: 5px 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            font-size: 0.9em;
+            outline: none;
+        }
+
+        .pagination-controls .page-info {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .pagination-controls .page-nav-buttons button {
+            background-color: transparent;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            color: #555;
+        }
+
+        .pagination-controls .page-nav-buttons button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+
+        .pagination-controls .page-nav-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .top-navbar {
+                padding: 10px 15px;
+            }
+            .top-navbar .dashboard-title {
+                font-size: 1.1em;
+            }
+            .top-navbar .logout-btn {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+
+            .sidebar {
+                width: 60px; /* Default collapsed on smaller screens */
+                padding-top: 10px;
+            }
+            .sidebar nav ul li a {
+                padding: 10px 15px;
+            }
+            .sidebar nav ul li a i {
+                margin-right: 0;
+            }
+            .sidebar nav ul li a span {
+                display: none;
+            }
+            .sidebar nav ul li a.active {
+                padding-left: 17.5px; /* Adjusted for collapsed state */
+            }
+
+            .content-area {
+                padding: 20px;
+                gap: 20px;
+            }
+            .card-title {
+                font-size: 1.3em;
+            }
+            .stats-cards {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            .stat-card {
+                padding: 20px;
+            }
+            .stat-card .value {
+                font-size: 1.8em;
+            }
+            .charts-section {
+                grid-template-columns: 1fr; /* Stack charts vertically */
+                gap: 20px;
+            }
+            .chart-card {
+                min-height: 250px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+            .reports-content .charts-section {
+                grid-template-columns: 1fr; /* Stack reports charts vertically */
+            }
+
+            .users-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .users-search {
+                width: 100%;
+            }
+            .pagination-controls {
+                justify-content: center;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-navbar .left-section {
+                gap: 10px;
+            }
+            .top-navbar .dashboard-title {
+                font-size: 1em;
+            }
+            .top-navbar .menu-icon {
+                font-size: 1.3em;
+            }
+            .top-navbar .logout-btn {
+                padding: 5px 10px;
+                font-size: 0.8em;
+            }
+
+            .sidebar {
+                width: 50px; /* Even smaller collapsed width */
+            }
+            .sidebar nav ul li a {
+                padding: 8px 10px;
+            }
+            .sidebar nav ul li a i {
+                font-size: 1em;
+            }
+            .sidebar nav ul li a.active {
+                padding-left: 15px;
+            }
+
+            .content-area {
+                padding: 15px;
+                gap: 15px;
+            }
+            .card-title {
+                font-size: 1.1em;
+            }
+            .stats-cards {
+                grid-template-columns: 1fr; /* Stack stats cards vertically */
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 15px;
+            }
+            .stat-card .value {
+                font-size: 1.5em;
+            }
+            .chart-card {
+                min-height: 200px;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 8px 10px;
+                font-size: 0.8em;
+            }
+            .users-header .title {
+                font-size: 1.5em;
+            }
+            .users-search {
+                padding: 6px 10px;
+            }
+            .users-search input {
+                font-size: 0.9em;
+            }
+            .pagination-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="left-section">
+            <i class="fas fa-bars menu-icon" id="menuToggle"></i>
+            <span class="dashboard-title">Dashboard</span>
+        </div>
+        <button class="logout-btn">LOGOUT</button>
+    </div>
+
+    <div class="app-container">
+        <div class="sidebar" id="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-content="dashboard"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#" data-content="reports"><i class="fas fa-chart-line"></i> <span>Reports</span></a></li>
+                    <li><a href="#" data-content="users"><i class="fas fa-users"></i> <span>Users</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- Dashboard Content -->
+            <div id="dashboardContent" style="display: flex;">
+                <div class="stats-cards">
+                    <div class="stat-card card">
+                        <div class="label">Total Users</div>
+                        <div class="value">9</div>
+                    </div>
+                    <div class="stat-card card">
+                        <div class="label">Average Age</div>
+                        <div class="value">47.8</div>
+                    </div>
+                </div>
+
+                <div class="charts-section">
+                    <div class="chart-card card">
+                        <div class="chart-title">Series 1 vs Series 2</div>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                    <div class="chart-card card">
+                        <div class="chart-title">Category Distribution</div>
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="users-overview card">
+                    <h3 class="card-title">Users Overview</h3>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Full Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Jon</td>
+                                    <td>Snow</td>
+                                    <td>35</td>
+                                    <td>Jon Snow</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Cersei</td>
+                                    <td>Lannister</td>
+                                    <td>42</td>
+                                    <td>Cersei Lannister</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Jaime</td>
+                                    <td>Lannister</td>
+                                    <td>40</td>
+                                    <td>Jaime Lannister</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Johanes</td>
+                                    <td>Angeles</td>
+                                    <td>22</td>
+                                    <td>Johanes Angeles</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Alezzandrei</td>
+                                    <td>Balbuena</td>
+                                    <td>21</td>
+                                    <td>Alezzandrei Balbuena</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Content (Initially hidden) -->
+            <div id="reportsContent" style="display: none;">
+                <h2 class="card-title">Reports and Data Visualization</h2>
+
+                <div class="charts-section">
+                    <div class="chart-card card">
+                        <div class="chart-title">Monthly Sales vs. Profit</div>
+                        <canvas id="monthlySalesChart"></canvas>
+                    </div>
+                    <div class="chart-card card">
+                        <div class="chart-title">Product Category Distribution</div>
+                        <canvas id="productCategoryChart"></canvas>
+                    </div>
+                    <div class="chart-card card">
+                        <div class="chart-title">Weekly Website Interactions</div>
+                        <canvas id="weeklyInteractionsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="reports-info-box card">
+                    <h3 class="card-title">Additional Information or Summary</h3>
+                    <p>
+                        This page provides a visual overview of key metrics. You can customize the data and chart types to display the information most relevant to your needs.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Users Content (Initially hidden) -->
+            <div id="usersContent" style="display: none;">
+                <div class="users-header">
+                    <div class="title">User List</div>
+                    <div class="users-search">
+                        <input type="text" placeholder="Search users">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+                <div class="card data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID <i class="fas fa-sort-up"></i></th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td>john.doe@example.com</td>
+                                <td>Admin</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Jane</td>
+                                <td>Smith</td>
+                                <td>jane.smith@example.com</td>
+                                <td>Editor</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Peter</td>
+                                <td>Jones</td>
+                                <td>peter.jones@example.com</td>
+                                <td>Viewer</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Alice</td>
+                                <td>Brown</td>
+                                <td>alice.brown@example.com</td>
+                                <td>Admin</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Bob</td>
+                                <td>Williams</td>
+                                <td>bob.williams@example.com</td>
+                                <td>Editor</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Charlie</td>
+                                <td>Garcia</td>
+                                <td>charlie.garcia@example.com</td>
+                                <td>Viewer</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Eva</td>
+                                <td>Martinez</td>
+                                <td>eva.martinez@example.com</td>
+                                <td>Admin</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>David</td>
+                                <td>Lopez</td>
+                                <td>david.lopez@example.com</td>
+                                <td>Editor</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Sophia</td>
+                                <td>Gonzalez</td>
+                                <td>sophia.gonzalez@example.com</td>
+                                <td>Viewer</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Michael</td>
+                                <td>Rodriguez</td>
+                                <td>michael.rodriguez@example.com</td>
+                                <td>Admin</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-controls">
+                    <div class="rows-per-page">
+                        <span>Rows per page:</span>
+                        <select>
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                    <div class="page-info">1-10 of 12</div>
+                    <div class="page-nav-buttons">
+                        <button disabled>&lt;</button>
+                        <button>&gt;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to store chart instances for proper destruction
+        let dashboardBarChartInstance = null;
+        let dashboardPieChartInstance = null;
+        let reportsMonthlySalesChartInstance = null;
+        let reportsProductCategoryChartInstance = null;
+        let reportsWeeklyInteractionsChartInstance = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            const dashboardContent = document.getElementById('dashboardContent');
+            const reportsContent = document.getElementById('reportsContent');
+            const usersContent = document.getElementById('usersContent');
+
+            // Function to destroy existing chart instances in a given content area
+            function destroyChartsInContent(contentElement) {
+                const canvasElements = contentElement.querySelectorAll('canvas');
+                canvasElements.forEach(canvas => {
+                    const chartInstance = Chart.getChart(canvas);
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+                });
+            }
+
+            // Function to initialize Dashboard charts
+            function initDashboardCharts() {
+                // Destroy existing instances if they exist
+                if (dashboardBarChartInstance) dashboardBarChartInstance.destroy();
+                if (dashboardPieChartInstance) dashboardPieChartInstance.destroy();
+
+                const barCtx = document.getElementById('barChart').getContext('2d');
+                dashboardBarChartInstance = new Chart(barCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                        datasets: [
+                            {
+                                label: 'Series 1',
+                                data: [40, 55, 48, 35],
+                                backgroundColor: '#8d9ee8',
+                                borderColor: '#8d9ee8',
+                                borderWidth: 1,
+                                borderRadius: 5
+                            },
+                            {
+                                label: 'Series 2',
+                                data: [30, 60, 40, 65],
+                                backgroundColor: '#4caf50',
+                                borderColor: '#4caf50',
+                                borderWidth: 1,
+                                borderRadius: 5
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 80
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 10,
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const pieCtx = document.getElementById('pieChart').getContext('2d');
+                dashboardPieChartInstance = new Chart(pieCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Group A', 'Group B', 'Group C', 'Group D'],
+                        datasets: [{
+                            data: [33, 25, 17, 25],
+                            backgroundColor: [
+                                '#00BCD4',
+                                '#4CAF50',
+                                '#FF9800',
+                                '#2196F3'
+                            ],
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'right',
+                                labels: {
+                                    boxWidth: 10,
+                                    padding: 15
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Function to initialize Reports charts
+            function initReportsCharts() {
+                // Destroy existing instances if they exist
+                if (reportsMonthlySalesChartInstance) reportsMonthlySalesChartInstance.destroy();
+                if (reportsProductCategoryChartInstance) reportsProductCategoryChartInstance.destroy();
+                if (reportsWeeklyInteractionsChartInstance) reportsWeeklyInteractionsChartInstance.destroy();
+
+                const monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
+                reportsMonthlySalesChartInstance = new Chart(monthlySalesCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Feb', 'Apr', 'Jun'],
+                        datasets: [
+                            {
+                                label: 'Sales',
+                                data: [1350, 900, 1500],
+                                backgroundColor: '#9575CD',
+                                borderColor: '#9575CD',
+                                borderWidth: 1,
+                                borderRadius: 5
+                            },
+                            {
+                                label: 'Profit',
+                                data: [750, 450, 700],
+                                backgroundColor: '#C5CAE9',
+                                borderColor: '#C5CAE9',
+                                borderWidth: 1,
+                                borderRadius: 5
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 1800
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 10,
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const productCategoryCtx = document.getElementById('productCategoryChart').getContext('2d');
+                reportsProductCategoryChartInstance = new Chart(productCategoryCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Electronics', 'Clothing', 'Books', 'Home Goods', 'Others'],
+                        datasets: [{
+                            data: [35, 26, 17, 13, 9],
+                            backgroundColor: [
+                                '#00BCD4',
+                                '#4CAF50',
+                                '#FF9800',
+                                '#2196F3',
+                                '#9C27B0'
+                            ],
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 10,
+                                    padding: 15
+                                }
+                            }
+                        }
+                    }
+                });
+
+                const weeklyInteractionsCtx = document.getElementById('weeklyInteractionsChart').getContext('2d');
+                reportsWeeklyInteractionsChartInstance = new Chart(weeklyInteractionsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                        datasets: [
+                            {
+                                label: 'Views',
+                                data: [120, 160, 90, 170],
+                                backgroundColor: '#8d9ee8',
+                                borderColor: '#8d9ee8',
+                                borderWidth: 1,
+                                borderRadius: 5,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Clicks',
+                                data: [30, 45, 25, 60],
+                                backgroundColor: '#4caf50',
+                                borderColor: '#4caf50',
+                                borderWidth: 1,
+                                borderRadius: 5,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                beginAtZero: true,
+                                max: 180
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                beginAtZero: true,
+                                max: 60,
+                                grid: {
+                                    drawOnChartArea: false,
+                                },
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 10,
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Function to show specific content section and update active sidebar link
+            function showContent(contentId) {
+                // Hide all content sections and destroy their charts
+                if (dashboardContent.style.display !== 'none') destroyChartsInContent(dashboardContent);
+                dashboardContent.style.display = 'none';
+
+                if (reportsContent.style.display !== 'none') destroyChartsInContent(reportsContent);
+                reportsContent.style.display = 'none';
+                
+                if (usersContent.style.display !== 'none') destroyChartsInContent(usersContent);
+                usersContent.style.display = 'none';
+
+                // Show the requested content section
+                const targetContent = document.getElementById(contentId);
+                targetContent.style.display = 'flex'; // Use flex for main content divs
+
+                // Initialize charts for the newly visible content
+                if (contentId === 'dashboardContent') {
+                    initDashboardCharts();
+                } else if (contentId === 'reportsContent') {
+                    initReportsCharts();
+                }
+
+                // Remove 'active' class from all sidebar links
+                document.querySelectorAll('.sidebar nav ul li a').forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Add 'active' class to the clicked link
+                document.querySelector(`.sidebar nav ul li a[data-content="${contentId.replace('Content', '')}"]`).classList.add('active');
+            }
+
+            // Initial content display (Dashboard)
+            showContent('dashboardContent');
+
+            // Toggle sidebar on menu icon click
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            // Handle sidebar link clicks
+            document.querySelectorAll('.sidebar nav ul li a').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const contentId = this.dataset.content + 'Content'; // e.g., 'dashboard' -> 'dashboardContent'
+                    showContent(contentId);
+                });
+            });
+        });
+    </script>
+</body>
+</html>"

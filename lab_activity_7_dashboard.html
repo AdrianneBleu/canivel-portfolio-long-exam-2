@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6; /* Light background for the page */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            background-color: #2196F3; /* Blue, similar to image */
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky; /* Keeps navbar at the top when scrolling */
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+
+        .top-navbar .left-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-navbar .welcome-text {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .top-navbar .right-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-navbar .search-box {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .top-navbar .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            color: white;
+            padding: 3px;
+            font-size: 0.95em;
+            width: 150px; /* Adjust as needed */
+        }
+
+        .top-navbar .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .top-navbar .search-box i {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-navbar .logout-btn {
+            background-color: #f44336; /* Red for logout */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .top-navbar .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Main container for sidebar and content */
+        .app-container {
+            display: flex;
+            flex: 1; /* Allows it to take remaining vertical space */
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 200px; /* Fixed width for sidebar */
+            background-color: #2c3e50; /* Dark grey, similar to image */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding-top: 20px;
+            flex-shrink: 0; /* Prevents sidebar from shrinking */
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #ecf0f1; /* Light text color */
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        .sidebar nav ul li a i {
+            font-size: 1.2em;
+            margin-right: 15px;
+            width: 25px; /* Fixed width for icon to keep alignment */
+            text-align: center;
+        }
+        
+        .sidebar nav ul li a:hover {
+            background-color: #34495e; /* Slightly lighter dark grey on hover */
+            color: white;
+        }
+
+        .sidebar nav ul li a.active {
+            background-color: #3f51b5; /* Active link background, matching top navbar */
+            color: white;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1; /* Takes all available space */
+            padding: 30px;
+            background-color: #f4f7f6; /* Light background */
+            display: flex;
+            flex-direction: column; /* Stacks sections vertically */
+            gap: 25px; /* Space between sections */
+            overflow-y: auto; /* Allow scrolling within content area */
+        }
+
+        /* Card styles for content sections */
+        .card {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content-header { /* Re-enabled and updated for Users/Articles sections */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px; /* Space between header and table card */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 15px; /* Space between elements */
+        }
+
+        .content-header .title { /* Specific title styling within content-header */
+            font-size: 2em; /* Main section title */
+            font-weight: 600;
+            color: #333;
+        }
+
+        .add-button-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .add-button-primary:hover {
+            background-color: #45a049;
+        }
+
+        /* Removed section-content-row, section-controls, flex-grow-card as they are no longer used for Users/Articles layout */
+        /* .section-content-row {} */
+        /* .section-controls {} */
+        /* .flex-grow-card {} */
+
+
+        /* Table styles */
+        .data-table-container {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .data-table th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        .data-table th i {
+            margin-left: 5px;
+            font-size: 0.7em;
+            cursor: pointer;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover {
+            background-color: #fbfbfb;
+        }
+
+        /* Actions column buttons/toggles */
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-buttons .edit-btn {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease;
+        }
+
+        .action-buttons .edit-btn:hover {
+            background-color: #1976d2;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Pagination controls */
+        .pagination-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination-controls .rows-per-page {
+            font-size: 0.9em;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pagination-controls select {
+            padding: 5px 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            font-size: 0.9em;
+            outline: none;
+        }
+
+        .pagination-controls .page-info {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .pagination-controls .page-nav-buttons button {
+            background-color: transparent;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            color: #555;
+        }
+
+        .pagination-controls .page-nav-buttons button:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+
+        .pagination-controls .page-nav-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Add User Modal (Adjusted for general modal use) */
+        .form-modal {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 380px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.visible .form-modal {
+            transform: translateY(0);
+        }
+
+        .form-modal h3 {
+            font-size: 1.8em;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .form-modal form .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+        
+        .form-modal form .form-group i {
+            color: #777;
+            font-size: 1.1em;
+        }
+
+        .form-modal form input,
+        .form-modal form select {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            padding: 5px 0;
+            font-size: 1em;
+            color: #333;
+            background: transparent;
+        }
+
+        .form-modal form input::placeholder {
+            color: #aaa;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-buttons .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        .modal-buttons .cancel-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+
+        .modal-buttons .cancel-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .modal-buttons .add-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+
+        .modal-buttons .add-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .top-navbar {
+                padding: 10px 15px;
+            }
+            .top-navbar .welcome-text {
+                font-size: 1.1em;
+            }
+            .top-navbar .search-box {
+                width: 120px;
+            }
+            .top-navbar .search-box input {
+                width: 80px;
+            }
+            .top-navbar .logout-btn {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+
+            .sidebar {
+                width: 60px;
+                padding-top: 10px;
+            }
+            .sidebar nav ul li a {
+                padding: 10px 15px;
+            }
+            .sidebar nav ul li a i {
+                margin-right: 0;
+            }
+            .sidebar nav ul li a span {
+                display: none;
+            }
+            .sidebar nav ul li a.active {
+                padding-left: 17.5px;
+            }
+
+            .content-area {
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            /* section-content-row and section-controls are removed for the Users/Articles sections
+               as they no longer have the two-column layout. 
+               The content-header will now handle responsiveness as needed. */
+
+            .content-header { /* Adjust for smaller screens when using content-header */
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .content-header .title {
+                font-size: 1.8em;
+            }
+            .add-button-primary { /* General button, for Dashboard/Settings if they use it */
+                width: auto; /* Allow button to size naturally */
+                justify-content: center; /* Center text if needed */
+                font-size: 0.95em;
+            }
+            /* Specific adjustment for button within content-header on smaller screens */
+            .content-header .add-button-primary {
+                width: 100%; /* Full width button in stacked layout */
+                justify-content: center;
+                align-self: auto; /* Reset align-self */
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+            .pagination-controls {
+                justify-content: center;
+                gap: 10px;
+            }
+            .form-modal {
+                max-width: 90%;
+                padding: 20px;
+            }
+            .form-modal h3 {
+                font-size: 1.5em;
+                margin-bottom: 20px;
+            }
+            .form-modal form .form-group {
+                padding: 6px 10px;
+            }
+            .form-modal form input,
+            .form-modal form select {
+                font-size: 0.95em;
+            }
+            .modal-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .modal-buttons .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-navbar {
+                padding: 8px 10px;
+            }
+            .top-navbar .welcome-text {
+                font-size: 1em;
+            }
+            .top-navbar .search-box {
+                width: 100px;
+            }
+            .top-navbar .search-box input {
+                width: 60px;
+                font-size: 0.85em;
+            }
+            .top-navbar .logout-btn {
+                padding: 5px 10px;
+                font-size: 0.8em;
+            }
+
+            .sidebar {
+                width: 50px;
+            }
+            .sidebar nav ul li a {
+                padding: 8px 10px;
+            }
+            .sidebar nav ul li a i {
+                font-size: 1em;
+            }
+            .sidebar nav ul li a.active {
+                padding-left: 15px;
+            }
+
+            .content-area {
+                padding: 15px;
+                gap: 15px;
+            }
+            .content-header .title {
+                font-size: 1.5em;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 8px 10px;
+                font-size: 0.8em;
+            }
+            .edit-btn {
+                padding: 5px 10px;
+                font-size: 0.8em;
+            }
+            .pagination-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .pagination-controls .rows-per-page,
+            .pagination-controls .page-info {
+                font-size: 0.8em;
+            }
+            .pagination-controls select,
+            .pagination-controls button {
+                padding: 4px 8px;
+                font-size: 0.8em;
+            }
+            .form-modal {
+                padding: 15px;
+            }
+            .form-modal h3 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+            .form-modal form .form-group {
+                padding: 5px 8px;
+            }
+            .form-modal form input,
+            .form-modal form select {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-navbar">
+        <div class="left-section">
+            <span class="welcome-text">Welcome, Adrianne</span>
+        </div>
+        <div class="right-section">
+            <div class="search-box">
+                <input type="text" placeholder="Search...">
+                <i class="fas fa-search"></i>
+            </div>
+            <button class="logout-btn">LOGOUT</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <div class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-content="dashboard"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#" data-content="users"><i class="fas fa-users"></i> <span>Users</span></a></li>
+                    <li><a href="#" data-content="articles"><i class="fas fa-newspaper"></i> <span>Articles</span></a></li>
+                    <li><a href="#" data-content="settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="content-area">
+            <!-- Dashboard Content (Placeholder for now) -->
+            <div id="dashboardContent" style="display: none;">
+                <h2 class="content-title">Dashboard Overview</h2>
+                <div class="card" style="padding: 20px; text-align: center; color: #777;">
+                    <p>Dashboard content will be implemented here.</p>
+                </div>
+            </div>
+
+            <!-- Users Content -->
+            <div id="usersContent" style="display: flex; flex-direction: column;">
+                <div class="content-header">
+                    <div class="title">Users</div>
+                    <button class="add-button-primary" id="addUserButton"><i class="fas fa-user-plus"></i> ADD USER</button>
+                </div>
+                <div class="card">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID <i class="fas fa-sort-up"></i></th>
+                                    <th>Name</th>
+                                    <th>Age</th>
+                                    <th>Gender</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Type</th>
+                                    <th>Username</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Adrianne Canivel</td>
+                                    <td>21</td>
+                                    <td>Female</td>
+                                    <td>09668946778</td>
+                                    <td>adrianne.canivel@gmail.com</td>
+                                    <td>Viewer</td>
+                                    <td>AdrianneBleu</td>
+                                    <td>14 Gonzaga</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn">EDIT</button>
+                                            <label class="switch">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Bernie Barrantes</td>
+                                    <td>36</td>
+                                    <td>Female</td>
+                                    <td>09889037778</td>
+                                    <td>bernieb@gmail.com</td>
+                                    <td>Editor</td>
+                                    <td>BernieB</td>
+                                    <td>570 Mandaluyong</td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn">EDIT</button>
+                                            <label class="switch">
+                                                <input type="checkbox">
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- More user rows can be added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-controls">
+                        <div class="rows-per-page">
+                            <span>Rows per page:</span>
+                            <select>
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                        <div class="page-info">1-2 of 2</div>
+                        <div class="page-nav-buttons">
+                            <button disabled>&lt;</button>
+                            <button disabled>&gt;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Articles Content (Initially hidden) -->
+            <div id="articlesContent" style="display: none; flex-direction: column;">
+                <div class="content-header">
+                    <div class="title">Articles</div>
+                    <button class="add-button-primary" id="addArticleButton"><i class="fas fa-plus"></i> ADD ARTICLE</button>
+                </div>
+                <div class="card">
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Title</th>
+                                    <th>Active</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SLKdsaofhsolucn</td>
+                                    <td>test1</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn">EDIT</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Web Development</td>
+                                    <td>React JS</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn">EDIT</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Adv Web</td>
+                                    <td>MERN STACK</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn">EDIT</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>asdasd</td>
+                                    <td>asdasd</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn">EDIT</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination-controls">
+                        <div class="rows-per-page">
+                            <span>Rows per page:</span>
+                            <select>
+                                <option value="100">100</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+                        <div class="page-info">1-4 of 4</div>
+                        <div class="page-nav-buttons">
+                            <button disabled>&lt;</button>
+                            <button disabled>&gt;</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Content (Initially hidden) -->
+            <div id="settingsContent" style="display: none;">
+                <h2 class="content-title">Settings</h2>
+                <div class="card" style="padding: 20px; text-align: center; color: #777;">
+                    <p>Settings management features will be implemented here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal (Hidden by default) -->
+    <div id="addUserModal" class="modal-overlay">
+        <div class="form-modal">
+            <h3>Add User</h3>
+            <form class="add-user-form" id="addUserForm">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="firstName" placeholder="Enter first name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="lastName" placeholder="Enter last name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="number" id="age" placeholder="Enter age" min="0" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-venus-mars"></i>
+                    <select id="gender" required>
+                        <option value="">Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-mobile-alt"></i>
+                    <input type="tel" id="mobile" placeholder="Enter mobile" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="address" placeholder="Enter address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="userType" required>
+                        <option value="">Type</option>
+                        <option value="Viewer">Viewer</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user-circle"></i>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn cancel-btn" id="cancelAddUser">CANCEL</button>
+                    <button type="submit" class="btn add-btn">ADD</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar and content management
+            const sidebarLinks = document.querySelectorAll('.sidebar nav ul li a');
+            const contentAreas = document.querySelectorAll('.content-area > div'); // Select all direct children divs
+
+            function showContent(contentId) {
+                contentAreas.forEach(area => {
+                    area.style.display = 'none'; // Hide all content areas
+                });
+                // Ensure correct display type based on layout needs
+                if (contentId === 'dashboardContent' || contentId === 'settingsContent') {
+                    document.getElementById(contentId).style.display = 'block'; // Or 'flex' if internal content uses it
+                } else {
+                    document.getElementById(contentId).style.display = 'flex'; // For Users/Articles to stack header and card
+                }
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active'); // Deactivate all sidebar links
+                });
+                document.querySelector(`.sidebar nav ul li a[data-content="${contentId.replace('Content', '')}"]`).classList.add('active'); // Activate current link
+            }
+
+            // Set initial content to Users
+            showContent('usersContent');
+
+            // Toggle sidebar for smaller screens (if desired, not directly in image but useful)
+            const menuToggle = document.querySelector('.menu-icon');
+            const sidebar = document.querySelector('.sidebar');
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // Event listeners for sidebar navigation
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const contentId = this.dataset.content + 'Content';
+                    showContent(contentId);
+                });
+            });
+
+            // Add User Modal functionality
+            const addUserButton = document.getElementById('addUserButton');
+            const addUserModal = document.getElementById('addUserModal');
+            const cancelAddUserButton = document.getElementById('cancelAddUser');
+            const addUserForm = document.getElementById('addUserForm');
+            const dataTableBodyUsers = document.querySelector('#usersContent .data-table tbody'); // Specific to users table
+
+            addUserButton.addEventListener('click', () => {
+                addUserModal.classList.add('visible');
+            });
+
+            cancelAddUserButton.addEventListener('click', () => {
+                addUserModal.classList.remove('visible');
+                addUserForm.reset();
+            });
+
+            addUserForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const newId = dataTableBodyUsers.children.length + 1;
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const age = document.getElementById('age').value;
+                const gender = document.getElementById('gender').value;
+                const mobile = document.getElementById('mobile').value;
+                const address = document.getElementById('address').value;
+                const email = document.getElementById('email').value;
+                const userType = document.getElementById('userType').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value; 
+
+                const newRow = dataTableBodyUsers.insertRow();
+                newRow.innerHTML = `
+                    <td>${newId}</td>
+                    <td>${firstName} ${lastName}</td>
+                    <td>${age}</td>
+                    <td>${gender}</td>
+                    <td>${mobile}</td>
+                    <td>${email}</td>
+                    <td>${userType}</td>
+                    <td>${username}</td>
+                    <td>${address}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="edit-btn">EDIT</button>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </td>
+                `;
+
+                addUserModal.classList.remove('visible');
+                addUserForm.reset();
+                // Update pagination info - rudimentary example
+                const currentPageInfo = document.querySelector('#usersContent .page-info');
+                const totalRows = dataTableBodyUsers.children.length;
+                currentPageInfo.textContent = `1-${totalRows} of ${totalRows}`;
+                // Using a custom message box for feedback
+                const messageBox = document.createElement('div');
+                messageBox.id = 'customMessageBox';
+                messageBox.textContent = 'User added successfully!';
+                document.body.appendChild(messageBox);
+                setTimeout(() => {
+                    messageBox.remove();
+                }, 2000);
+            });
+
+            // Add Article Button functionality (placeholder for now)
+            const addArticleButton = document.getElementById('addArticleButton');
+            if (addArticleButton) { // Check if the button exists
+                addArticleButton.addEventListener('click', () => {
+                    // Using a custom message box for feedback
+                    const messageBox = document.createElement('div');
+                    messageBox.id = 'customMessageBox';
+                    messageBox.textContent = 'Add Article functionality to be implemented!';
+                    document.body.appendChild(messageBox);
+                    setTimeout(() => {
+                        messageBox.remove();
+                    }, 2000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

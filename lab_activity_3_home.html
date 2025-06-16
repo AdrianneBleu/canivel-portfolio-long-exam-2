@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Activity 3: Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling */
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column; /* Stack header and main content */
+            align-items: center;
+            min-height: 100vh;
+            /* UPDATED: Background to use image from the 'images' subfolder */
+            background-image: url('/images/lover-bg.jpg'); /* Corrected path to your image */
+            background-size: cover; /* Ensures the image covers the entire body */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-position: center center; /* Centers the image */
+            background-attachment: fixed; /* Keeps the background fixed while scrolling */
+            color: #333;
+            box-sizing: border-box;
+            overflow: auto; /* Allow scrolling */
+        }
+
+        /* Top Navigation Bar */
+        .navbar {
+            width: 100%;
+            background: linear-gradient(to right, #FFDDE1, #FFC0CB); /* Pink gradient */
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between; /* Distributes space between items */
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed; /* Fix navbar to the top */
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-family: 'Dancing Script', cursive; /* Script font for 'Lover' */
+            font-size: 2.5em;
+            color: #FF69B4; /* Hot pink for the logo */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 25px;
+            flex-grow: 1; /* Allows nav-links to take up available space */
+            justify-content: center; /* Centers the actual links within the available space */
+        }
+
+        .navbar .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #FF69B4; /* Hot pink on hover */
+        }
+
+        /* Styles for the Login button (re-added and styled for its position on the right) */
+        .navbar .login-button {
+            background-color: #FF69B4; /* Hot pink button */
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px; /* More rounded */
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Prevents text from wrapping */
+            margin-right: 50px; /* Adjust this value to move it further left or right */
+        }
+
+        .navbar .login-button:hover {
+            background-color: #FF3399; /* Darker pink on hover */
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1; /* Allows content to take available vertical space */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px 50px 20px; /* Top padding to clear fixed navbar */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Home content container */
+        .home-content-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+
+        .home-content-container h2 {
+            font-size: 3em;
+            color: #FF69B4;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-content-container p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 40px;
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* NEW: Footer Styling - Consistent with 404 page */
+        .footer {
+            width: 100%;
+            background: linear-gradient(to right, #FFDDE1, #FFC0CB); /* Light pink gradient */
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow at the top of the footer */
+            margin-top: auto; /* Pushes the footer to the bottom */
+            box-sizing: border-box;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 10px;
+        }
+
+        .footer .footer-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer .footer-links a:hover {
+            color: #FF69B4;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+                flex-direction: column; /* Stack items vertically on smaller screens */
+                gap: 10px;
+            }
+            .navbar .nav-links {
+                margin-right: 0;
+                justify-content: center;
+                width: 100%;
+                gap: 15px;
+            }
+            .navbar .logo {
+                font-size: 2em;
+            }
+            .navbar .nav-links a, .navbar .login-button { /* Apply to login button as well */
+                font-size: 1em;
+                padding: 6px 15px;
+            }
+            .main-content {
+                padding: 120px 15px 50px 15px;
+            }
+            .home-content-container {
+                padding: 30px;
+                border-radius: 20px;
+            }
+            .home-content-container h2 {
+                font-size: 2.5em;
+            }
+            .home-content-container p {
+                font-size: 1.1em;
+            }
+            .footer {
+                padding: 15px 20px;
+            }
+            .footer .footer-links {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 8px 15px;
+            }
+            .navbar .logo {
+                font-size: 1.8em;
+            }
+            .navbar .nav-links {
+                gap: 10px;
+            }
+            .home-content-container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            .home-content-container h2 {
+                font-size: 2em;
+            }
+            .home-content-container p {
+                font-size: 1em;
+            }
+            .footer {
+                padding: 10px 15px;
+            }
+            .footer .footer-links {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="lab_activity_3_home.html" class="logo">Lover</a>
+        <div class="nav-links">
+            <a href="lab_activity_3_home.html" aria-current="page">Home</a>
+            <a href="lab_activity_3_about.html">About</a>
+            <a href="lab_activity_3_articles.html">Articles</a>
+        </div>
+        <a href="lab_activity_3_404.html" class="login-button">Login</a>
+    </nav>
+
+    <div class="main-content">
+        <div class="home-content-container">
+            <h2>Welcome, Lover!</h2>
+            <p>
+                Step into the pastel dreamscape of Taylor Swift’s Lover — a celebration of love in all its forms. Released in 2019, Lover marks a vibrant return to color, freedom, and storytelling from the heart. This album invites you to feel everything: the dizzying highs of romance, the quiet ache of heartbreak, the joy of self-discovery, and the fire of standing up for what you believe in.
+                <br /><br />
+                From the title track's whimsical vows to the electric beats of "Cruel Summer" and the personal anthem "The Archer," Lover is more than just an album — it’s a feeling, a place, a glittery declaration that love is golden, messy, and worth it all.
+                <br /><br />
+                Whether you’re here to dance, cry, reminisce, or fall in love all over again, you’re in the right place. Let the music begin. 💕🎶
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="lab_activity_3_about.html">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+        </div>
+        <p>&copy; 2020 Taylor Swift</p>
+    </footer>
+</body>
+</html>

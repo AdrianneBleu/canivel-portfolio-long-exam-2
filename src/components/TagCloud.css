@@ -1,0 +1,9 @@
+/* src/components/TagCloud.css */
+.tag-cloud-container {
+  display: flex;
+  flex-wrap: wrap; /* Allows tags to wrap to the next line */
+  gap: 15px; /* Space between tags */
+  justify-content: center; /* Center the tags horizontally */
+  max-width: 800px; /* Adjust max width as needed */
+  margin: 0 auto; /* Center the tag cloud itself */
+}

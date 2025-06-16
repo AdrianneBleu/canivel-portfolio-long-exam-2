@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Activity 1: To-Do List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling */
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            color: #eee;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: auto; /* Allow scrolling if content is long */
+            padding: 20px;
+            box-sizing: border-box;
+
+            /* Background image properties */
+            background-image: url('/images/to-do-list-bg.jpg'); /* Use the path to your uploaded image */
+            background-size: cover; /* Cover the entire body */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-position: center center; /* Center the image */
+            background-attachment: fixed; /* Keep background fixed while scrolling */
+        }
+
+        /* Main To-Do List Container */
+        .todo-container {
+            background-color: #fcf8f0; /* Light background for the main box */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); /* Stronger shadow for depth */
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 50px; /* Adjust spacing from top if needed */
+        }
+
+        /* To-Do List Heading */
+        h1 {
+            color: #333;
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* Input and Button Container */
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* To-Do Input Field */
+        .todo-input {
+            flex-grow: 1; /* Allow input to take available space */
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: 'Georgia', serif;
+            color: #333;
+            max-width: 300px; /* Limit input width */
+        }
+
+        /* Add Button */
+        .add-button {
+            background-color: #f09f4b; /* Orange/Gold color from original portfolio image */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-button:hover {
+            background-color: #d88a38;
+        }
+
+        /* To-Do List Items Container */
+        .todo-list {
+            list-style: none; /* Remove default list bullets */
+            padding: 0;
+            margin: 0;
+            max-height: 300px; /* Limit height and add scroll if many items */
+            overflow-y: auto;
+            margin-bottom: 30px;
+        }
+
+        /* Individual To-Do Item */
+        .todo-item {
+            display: flex;
+            align-items: center;
+            background-color: #fff; /* White background for each item */
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow for items */
+            font-size: 1.1em;
+            color: #333;
+            gap: 10px; /* Space between text and buttons */
+            text-align: left; /* Align text to left within item */
+        }
+
+        .todo-item.completed .task-text {
+            text-decoration: line-through; /* Strike-through for completed tasks */
+            color: #888; /* Lighter color for completed tasks */
+        }
+
+        .todo-item .task-text {
+            flex-grow: 1; /* Allow text to take most space */
+            word-break: break-word; /* Break long words */
+        }
+
+        /* Action Buttons (Complete, Remove) */
+        .action-button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            font-family: 'Georgia', serif;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Prevent button text from wrapping */
+        }
+
+        .complete-button {
+            background-color: #87bf60; /* Green color from original portfolio image */
+            color: white;
+        }
+
+        .complete-button:hover {
+            background-color: #72a550;
+        }
+
+        .remove-button {
+            background-color: #ffb3a7; /* Pink color from original portfolio image */
+            color: white;
+        }
+
+        .remove-button:hover {
+            background-color: #e09f92;
+        }
+        
+        /* Motto at the bottom */
+        .motto {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.7); /* Lighter, subtle white */
+            margin-top: 40px; /* Space above motto */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Custom Message Box Styles (reverted to simpler version) */
+        #customMessageBox {
+            position: fixed;
+            top: 20px; /* Position at the top */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            font-family: 'Arial', sans-serif; /* Simpler font for alerts */
+            font-size: 1em;
+        }
+
+        #customMessageBox.show {
+            opacity: 1;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .todo-container {
+                padding: 30px 20px;
+                margin-top: 20px;
+            }
+            h1 {
+                font-size: 2.2em;
+                margin-bottom: 20px;
+            }
+            .input-section {
+                flex-direction: column; /* Stack input and button vertically */
+                gap: 15px;
+            }
+            .todo-input, .add-button {
+                width: 100%;
+                max-width: none; /* Remove max-width constraint */
+            }
+            .todo-item {
+                flex-direction: column; /* Stack text and buttons vertically */
+                align-items: flex-start; /* Align text to left */
+                padding: 12px 15px;
+                gap: 8px;
+            }
+            .action-button {
+                width: 100%; /* Make buttons full width */
+                padding: 10px;
+            }
+            .motto {
+                font-size: 1em;
+                margin-top: 20px;
+            }
+            #customMessageBox {
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h1>To-Do List</h1>
+        <div class="input-section">
+            <input type="text" id="todoInput" class="todo-input" placeholder="Add a task...">
+            <button id="addButton" class="add-button">Add</button>
+        </div>
+        <ul id="todoList" class="todo-list">
+            <!-- Initial sample item - will be overwritten by loadTodos() if local storage has items -->
+        </ul>
+    </div>
+    <p class="motto">⊹₊⟡⋆ While I breathe, I hope ⊹₊⟡⋆</p>
+
+    <!-- Custom Message Box HTML -->
+    <div id="customMessageBox"></div>
+
+    <!-- Removed Custom Confirmation Box HTML and Modal Backdrop -->
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const todoInput = document.getElementById('todoInput');
+            const addButton = document.getElementById('addButton');
+            const todoList = document.getElementById('todoList');
+            const messageBox = document.getElementById('customMessageBox'); // Only messageBox now
+
+            // Load todos from local storage when the page loads
+            loadTodos();
+
+            // Event Listeners for Add button and Enter key
+            addButton.addEventListener('click', addTodo);
+            todoInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addTodo();
+                }
+            });
+
+            // Event Listener for Complete/Remove buttons on the list itself (delegation)
+            todoList.addEventListener('click', (e) => { // Made async unnecessary as no await calls
+                if (e.target.classList.contains('complete-button')) {
+                    const taskItem = e.target.closest('.todo-item');
+                    if (taskItem) {
+                        toggleComplete(taskItem);
+                    }
+                } else if (e.target.classList.contains('remove-button')) {
+                    const taskItem = e.target.closest('.todo-item');
+                    if (taskItem) {
+                        removeTodo(taskItem);
+                    }
+                }
+            });
+
+            // Helper function to create and append a todo item to the DOM
+            function createTodoElement(text, completed = false) {
+                const todoItem = document.createElement('li');
+                todoItem.classList.add('todo-item');
+                if (completed) {
+                    todoItem.classList.add('completed');
+                }
+                todoItem.innerHTML = `
+                    <span class="task-text">${text}</span>
+                    <button class="action-button complete-button">Complete</button>
+                    <button class="action-button remove-button">Remove</button>
+                `;
+                todoList.appendChild(todoItem);
+            }
+
+
+            // Function to add a new To-Do item
+            function addTodo() {
+                const taskText = todoInput.value.trim();
+                if (taskText === '') {
+                    displayMessageBox('Please enter a task!'); // Message for empty task
+                    return;
+                }
+
+                createTodoElement(taskText, false); // Use helper to create and append
+                todoInput.value = ''; // Clear input field
+                saveTodos(); // Save todos after adding
+                displayMessageBox('Task added successfully!'); // Confirmation for addition
+
+                // Optional: Scroll to the bottom of the list
+                todoList.scrollTop = todoList.scrollHeight;
+            }
+
+            // Function to toggle the completion status of a To-Do item
+            function toggleComplete(item) {
+                item.classList.toggle('completed');
+                saveTodos(); // Save todos after completing
+                displayMessageBox('Task status updated!');
+            }
+
+            // Function to remove a To-Do item
+            function removeTodo(item) {
+                item.remove();
+                saveTodos(); // Save todos after removing
+                displayMessageBox('Task removed successfully!');
+            }
+
+            // Function to save current To-Do list to Local Storage
+            function saveTodos() {
+                const todos = [];
+                todoList.querySelectorAll('.todo-item').forEach(item => {
+                    todos.push({
+                        text: item.querySelector('.task-text').textContent,
+                        completed: item.classList.contains('completed')
+                    });
+                });
+                localStorage.setItem('todos', JSON.stringify(todos));
+            }
+
+            // Function to load To-Do list from Local Storage
+            function loadTodos() {
+                const todos = JSON.parse(localStorage.getItem('todos')) || [];
+                todoList.innerHTML = ''; // Always clear to ensure fresh state
+
+                if (todos.length === 0) {
+                    // Add the default initial task if storage is empty
+                    createTodoElement('Buy Paint and Brushes', false);
+                    saveTodos(); // Save this initial item to local storage
+                } else {
+                    // Add tasks from local storage
+                    todos.forEach(todo => {
+                        createTodoElement(todo.text, todo.completed);
+                    });
+                }
+            }
+
+            // Custom Message Box (for transient notifications - simplified)
+            function displayMessageBox(message) {
+                let msgBox = document.getElementById('customMessageBox');
+                if (!msgBox) { // Create if it doesn't exist
+                    msgBox = document.createElement('div');
+                    msgBox.id = 'customMessageBox';
+                    document.body.appendChild(msgBox);
+                }
+                msgBox.textContent = message;
+                msgBox.classList.add('show');
+
+                setTimeout(() => {
+                    msgBox.classList.remove('show');
+                }, 2000); // Message visible for 2 seconds
+            }
+        });
+    </script>
+</body>
+</html>

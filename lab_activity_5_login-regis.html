@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styling for the body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            box-sizing: border-box;
+            padding: 20px; /* Add some padding for smaller screens */
+        }
+
+        /* Container for the login/registration/welcome forms */
+        .auth-container {
+            background-color: #ffffff; /* White background for the form */
+            padding: 40px;
+            border-radius: 12px; /* Slightly rounded corners */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Subtle shadow for depth */
+            text-align: center;
+            width: 100%;
+            max-width: 380px; /* Max width to keep the form compact */
+            box-sizing: border-box;
+        }
+
+        /* Heading for the form */
+        .auth-container h2 {
+            font-size: 2.2em;
+            color: #333333;
+            margin-bottom: 30px;
+            font-weight: 700; /* Bold */
+        }
+
+        /* Styling for form groups (label + input) */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left; /* Align labels and inputs to the left */
+        }
+
+        .form-group label {
+            display: block; /* Make label take full width */
+            font-size: 1em;
+            color: #555555;
+            margin-bottom: 8px;
+            font-weight: 600; /* Semi-bold */
+        }
+
+        .form-group input[type="email"],
+        .form-group input[type="password"],
+        .form-group input[type="text"] { /* Added type text for name */
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0; /* Light border */
+            border-radius: 8px; /* Rounded input fields */
+            font-size: 1em;
+            color: #333333;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input::placeholder { /* General placeholder style */
+            color: #aaaaaa; /* Lighter placeholder text */
+        }
+
+        .form-group input:focus { /* General focus style */
+            border-color: #66b3ff; /* Highlight on focus */
+            box-shadow: 0 0 0 3px rgba(102, 179, 255, 0.2); /* Subtle glow on focus */
+            outline: none; /* Remove default outline */
+        }
+
+        /* Styling for buttons */
+        .btn {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+            margin-top: 10px; /* Space between the last input and login button */
+        }
+
+        .btn-primary {
+            background-color: #4CAF50; /* Green color for login/register button */
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.25);
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.35);
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0; /* Light grey for secondary buttons */
+            color: #555555;
+            margin-top: 25px; /* Space between "Don't have an account?" and button */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e5e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Text for "Don't have an account?" or "Already have an account?" */
+        .alt-text {
+            font-size: 0.95em;
+            color: #777777;
+            margin-top: 30px;
+            margin-bottom: 5px; /* Space between text and button */
+        }
+
+        /* Styling for the Welcome Message */
+        .welcome-message h2 {
+            font-size: 2.2em; /* Consistent with other headings */
+            color: #333333;
+            margin-bottom: 10px; /* Reduced margin for closer text */
+            font-weight: 700;
+        }
+
+        .welcome-message p {
+            font-size: 1.1em;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 20px; /* Space before the detailed message */
+        }
+
+        .welcome-message .greeting {
+            font-size: 1.5em; /* Larger for "Hello, Adrianne!" */
+            color: #4CAF50; /* Green color to match primary button */
+            font-weight: 600;
+            margin-bottom: 15px; /* Space between greeting and message */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            .auth-container { /* Changed from .login-container to .auth-container */
+                padding: 30px 25px;
+                border-radius: 10px;
+            }
+            .auth-container h2 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                font-size: 0.9em;
+                margin-bottom: 6px;
+            }
+            .form-group input {
+                padding: 10px 12px;
+                font-size: 0.9em;
+            }
+            .btn {
+                padding: 12px 15px;
+                font-size: 1em;
+            }
+            .btn-secondary {
+                margin-top: 20px;
+            }
+            .alt-text {
+                font-size: 0.85em;
+                margin-top: 25px;
+            }
+            .welcome-message h2 {
+                font-size: 1.8em;
+                margin-bottom: 8px;
+            }
+            .welcome-message .greeting {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            .welcome-message p {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Login Form -->
+        <div id="loginForm">
+            <h2>Login</h2>
+            <form>
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="button" class="btn btn-primary" id="loginBtn">Login</button>
+            </form>
+            <p class="alt-text">Don't have an account?</p>
+            <button type="button" class="btn btn-secondary" id="goToRegistration">Go to Registration</button>
+        </div>
+
+        <!-- Registration Form (initially hidden) -->
+        <div id="registrationForm" style="display: none;">
+            <h2>Register</h2>
+            <form>
+                <div class="form-group">
+                    <label for="registerName">Name</label>
+                    <input type="text" id="registerName" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+            <p class="alt-text">Already have an account?</p>
+            <button type="button" class="btn btn-secondary" id="goToLogin">Go to Login</button>
+        </div>
+
+        <!-- Welcome Message (initially hidden) -->
+        <div id="welcomeMessage" class="welcome-message" style="display: none;">
+            <h2>Welcome</h2>
+            <p class="greeting" id="welcomeGreeting">Hello, Adrianne! 🎉</p>
+            <p>You have successfully logged in. You may now explore the platform.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const registrationForm = document.getElementById('registrationForm');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const welcomeGreeting = document.getElementById('welcomeGreeting'); // Get the greeting element
+
+            const goToRegistrationBtn = document.getElementById('goToRegistration');
+            const goToLoginBtn = document.getElementById('goToLogin');
+            const loginBtn = document.getElementById('loginBtn');
+
+            // Function to show only the login form
+            function showLoginForm() {
+                loginForm.style.display = 'block';
+                registrationForm.style.display = 'none';
+                welcomeMessage.style.display = 'none';
+            }
+
+            // Function to show only the registration form
+            function showRegistrationForm() {
+                loginForm.style.display = 'none';
+                registrationForm.style.display = 'block';
+                welcomeMessage.style.display = 'none';
+            }
+
+            // Function to show only the welcome message, with dynamic name
+            function showWelcomeMessage(userName) {
+                welcomeGreeting.textContent = `Hello, ${userName}! 🎉`; // Update the greeting text
+                loginForm.style.display = 'none';
+                registrationForm.style.display = 'none';
+                welcomeMessage.style.display = 'block';
+            }
+
+            // Event Listeners
+            goToRegistrationBtn.addEventListener('click', showRegistrationForm);
+            goToLoginBtn.addEventListener('click', showLoginForm);
+
+            // Simulate successful login when login button is clicked
+            loginBtn.addEventListener('click', function() {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+
+                if (email && password) {
+                    // Derive a simple name from the email for demonstration purposes
+                    let userName = email.split('@')[0]; // Get part before @
+                    userName = userName.charAt(0).toUpperCase() + userName.slice(1); // Capitalize first letter
+
+                    showWelcomeMessage(userName); // Pass the dynamic name
+                } else {
+                    // In a production environment, use a custom modal instead of alert()
+                    alert('Please enter both email and password to log in.');
+                }
+            });
+
+            // Initially show the login form
+            showLoginForm();
+        });
+    </script>
+</body>
+</html>

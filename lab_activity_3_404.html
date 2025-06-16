@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling - Consistent with other pages */
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('/images/lover-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            color: #333;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+        .main-content {
+            flex-grow: 1; /* Allows it to take up available vertical space */
+            display: flex;
+            justify-content: center; /* Centers horizontally */
+            align-items: center; /* Centers vertically */
+            padding: 0 20px; /* Removed vertical padding, only horizontal padding remains */
+            width: 80%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .error-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+        .error-container h2 {
+            font-size: 3.5em;
+            color: #FF69B4;
+            margin-bottom: 0px; /* Adjusted margin-bottom to reduce space below h2 even further */
+            font-weight: bold;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-container p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 25px; /* Reduced margin-bottom to bring button closer */
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Button Container */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 0px; /* Reduced margin-top on button group */
+        }
+
+        .error-container .nav-button {
+            background-color: #FF69B4;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            white-space: nowrap;
+            margin-bottom: 50px;
+        }
+
+        .error-container .nav-button:hover {
+            background-color: #FF3399;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0 15px; /* Adjusted horizontal padding */
+            }
+            .error-container {
+                padding: 30px;
+                border-radius: 20px;
+            }
+            .error-container h2 {
+                font-size: 2.8em;
+            }
+            .error-container p {
+                font-size: 1.1em;
+            }
+            .error-container .nav-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+            .button-group {
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0 10px; /* Adjusted horizontal padding */
+            }
+            .error-container {
+                padding: 10px;
+                border-radius: 15px;
+            }
+            .error-container h2 {
+                font-size: 2.2em;
+            }
+            .error-container p {
+                font-size: 1em;
+            }
+            .error-container .nav-button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="error-container">
+            <h2>404</h2>
+            <p>Oops! The page you're looking for doesn't exist.</p>
+            
+            <div class="button-group">
+                <a href="lab_activity_3_home.html" class="nav-button">Go Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Activity 3: About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Georgia&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styling - Consistent with home page */
+        body {
+            margin: 0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column; /* Stack header and main content */
+            align-items: center;
+            min-height: 100vh;
+            /* Using the same background image as the home page */
+            background-image: url('/images/lover-bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            color: #333;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+
+        /* Top Navigation Bar - Consistent with home page */
+        .navbar {
+            width: 100%;
+            background: linear-gradient(to right, #FFDDE1, #FFC0CB);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #FF69B4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 25px;
+            flex-grow: 1; /* Allows nav-links to take up available space */
+            justify-content: center; /* Centers the actual links within the available space */
+        }
+
+        .navbar .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #FF69B4;
+        }
+
+        /* Styles for the Login button - Consistent with home page */
+        .navbar .login-button {
+            background-color: #FF69B4;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            margin-right: 50px; /* Consistent margin as per home page */
+        }
+
+        .navbar .login-button:hover {
+            background-color: #FF3399;
+        }
+
+        /* Main Content Area - Consistent with home page */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 100px 20px 50px 20px; /* Top padding to clear fixed navbar */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* About Us Container (the white box) - Consistent with home page's content container */
+        .about-us-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            max-width: 700px; /* Adjusted max-width to match the provided image's text width */
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px); /* Optional: Add a subtle blur */
+        }
+
+        .about-us-container h2 {
+            font-size: 2.5em; /* Adjusted font size to match image */
+            color: #FF69B4;
+            margin-bottom: 30px; /* Adjusted margin to match image */
+            font-weight: bold;
+            letter-spacing: 0.05em; /* Added for consistency with previous version and image */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1); /* Consistent text shadow */
+        }
+
+        .about-us-container p {
+            font-size: 1.1em; /* Adjusted font size to match image */
+            line-height: 1.7; /* Adjusted line height to match image */
+            color: #555;
+            margin-bottom: 40px; /* Consistent margin, no contact button so it's the bottom margin */
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05); /* Consistent text shadow */
+        }
+
+        /* Footer Styling - Consistent with 404 page and Home page */
+        .footer {
+            width: 100%;
+            background: linear-gradient(to right, #FFDDE1, #FFC0CB); /* Light pink gradient */
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow at the top of the footer */
+            margin-top: auto; /* Pushes the footer to the bottom */
+            box-sizing: border-box;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 10px;
+        }
+
+        .footer .footer-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .footer .footer-links a:hover {
+            color: #FF69B4;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        /* Responsive Adjustments - Consistent with home page */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .navbar .nav-links {
+                margin-right: 0;
+                justify-content: center;
+                width: 100%;
+                gap: 15px;
+            }
+            .navbar .logo {
+                font-size: 2em;
+            }
+            .navbar .nav-links a, .navbar .login-button {
+                font-size: 1em;
+                padding: 6px 15px;
+            }
+            .main-content {
+                padding: 120px 15px 50px 15px;
+            }
+            .about-us-container {
+                padding: 30px;
+                border-radius: 20px;
+            }
+            .about-us-container h2 {
+                font-size: 2em;
+                margin-bottom: 20px;
+            }
+            .about-us-container p {
+                font-size: 1.1em;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+            .footer {
+                padding: 15px 20px;
+            }
+            .footer .footer-links {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 8px 15px;
+            }
+            .navbar .logo {
+                font-size: 1.8em;
+            }
+            .navbar .nav-links {
+                gap: 10px;
+            }
+            .about-us-container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            .about-us-container h2 {
+                font-size: 1.8em;
+            }
+            .about-us-container p {
+                font-size: 0.9em;
+            }
+            .footer {
+                padding: 10px 15px;
+            }
+            .footer .footer-links {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="lab_activity_3_home.html" class="logo">Lover</a>
+        <div class="nav-links">
+            <a href="lab_activity_3_home.html">Home</a>
+            <a href="lab_activity_3_about.html">About</a>
+            <a href="lab_activity_3_articles.html">Articles</a>
+        </div>
+        <a href="lab_activity_3_404.html" class="login-button">Login</a>
+    </div>
+
+    <div class="main-content">
+        <div class="about-us-container">
+            <h2>ABOUT US</h2>
+            <p>
+                Welcome to our website! Here, we share everything about our journey, mission, and vision. Our goal is to provide the best content to our community and build a space where everyone feels welcome and inspired. With a passion for creativity and innovation, we strive to keep our content fresh and exciting.
+                <br /><br />
+                Whether you're here to learn, explore, or just have fun, we're so glad to have you with you. Stay tuned for more exciting updates as we continue to grow and inspire.
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="lab_activity_3_about.html">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+        </div>
+        <p>&copy; 2020 Taylor Swift</p>
+    </footer>
+</body>
+</html>

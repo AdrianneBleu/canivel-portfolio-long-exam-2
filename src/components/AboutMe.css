@@ -1,0 +1,63 @@
+/* src/components/AboutMe.css */
+
+.about-me-container {
+    /* Overrides/adjusts some screen-content styles for AboutMe */
+    padding: 40px 20px; /* More vertical padding */
+    max-width: 800px; /* Slightly wider for content */
+}
+
+.about-me-greeting {
+    font-family: 'Georgia', serif;
+    font-size: 2em; /* Smaller than main motto, but still prominent */
+    color: #333;
+    margin-bottom: 5px; /* Close to the name */
+}
+
+.about-me-name {
+    font-family: 'Georgia', serif;
+    font-size: 3em; /* Prominent name */
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-weight: bold; /* Make the name bold */
+}
+
+.about-me-intro {
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    color: #555;
+    line-height: 1.6;
+    max-width: 650px; /* Limit width for readability */
+    margin-bottom: 40px;
+}
+
+.profile-image-wrapper {
+    margin-bottom: 20px;
+    border-radius: 50%; /* Make it circular */
+    overflow: hidden; /* Ensures image stays within circle */
+    border: 5px solid #333; /* Dark border around the image */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+.profile-image {
+    width: 200px;  /* Adjust size as needed */
+    height: 200px; /* Adjust size as needed */
+    object-fit: cover; /* Ensures image covers the area without distortion */
+    display: block; /* Removes extra space below image */
+}
+
+@media (max-width: 480px) {
+    .about-me-greeting {
+        font-size: 1.5em;
+    }
+    .about-me-name {
+        font-size: 2em;
+    }
+    .profile-image-wrapper {
+        border-width: 2px;
+    }
+    .profile-image {
+        width: 120px;
+        height: 120px;
+    }
+}

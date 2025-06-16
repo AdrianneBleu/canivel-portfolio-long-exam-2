@@ -1,0 +1,20 @@
+/* src/components/Tag.css */
+.tag {
+  display: inline-flex; /* Use inline-flex to center content if needed and allow flexible sizing */
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px; /* Adjust padding as needed */
+  border-radius: 20px; /* More rounded corners */
+  color: #333; /* Darker text color for contrast */
+  font-family: 'Arial', sans-serif; /* Or your preferred sans-serif font */
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: nowrap; /* Prevents text from wrapping within the tag */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+  cursor: default; /* Indicate it's not clickable by default */
+}
+
+.tag:hover {
+  transform: translateY(-2px); /* Slight lift on hover */
+}
