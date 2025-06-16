@@ -5,7 +5,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #fcf8f0; 
+  background-color: #fcf8f0;
   background-image: url('/grain.png');
   background-repeat: repeat;
   background-size: 150px;
@@ -51,7 +51,7 @@ body {
   width: 100%;
   max-width: 900px;
   /* Important: Remove any explicit height or fixed positioning here
-     that might interfere with routing content changing its height dynamically. */
+      that might interfere with routing content changing its height dynamically. */
 }
 
 .hero-section {
@@ -87,7 +87,7 @@ body {
 /* Style for the Link element wrapping the tag */
 .tag-link {
   text-decoration: none; /* Remove default underline */
-  color: inherit;        /* Inherit text color from the .tag div */
+  color: inherit;         /* Inherit text color from the .tag div */
 }
 
 /* Apply hover effect directly to the .tag div when the .tag-link is hovered */

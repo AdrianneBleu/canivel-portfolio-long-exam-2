@@ -41,7 +41,7 @@ function ProjectDetail() {
       description: `
         To run this specific activity, simply click the button below to open the application in a new tab:
       `,
-      launchLink: "http://localhost:5175/" 
+      launchLink: "https://canivel-long-exam-1.onrender.com" 
     },
     'lab-activity-4': { 
       title: 'Lab Activity 4',
